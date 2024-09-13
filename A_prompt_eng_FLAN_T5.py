@@ -92,7 +92,7 @@ print(tokenizer.decode(tranlation_outputs[0], skip_special_tokens=True))
 
 # context and question
 context_question = "The great wall of china is over 13000 miles long. \
-                    Question: how long is great wall of china in kilo meters?"
+                    Question: how long is great wall of china?"
 
 # Generate inputs
 

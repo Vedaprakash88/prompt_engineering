@@ -10,13 +10,12 @@ from datasets import load_dataset
 
 dataset = load_dataset('abisee/cnn_dailymail', '3.0.0')
 
-for i in range(4):
-    print(dataset['train'][i].get('article'), "\n\n")
-# print([dataset['train'][i] for i in range(3)])
 # loading the tokenizer and model
 
-#tokenizer = AutoTokenizer.from_pretrained("google/flan-t5-large")
-# model = TFAutoModelForSeq2SeqLM.from_pretrained("google/flan-t5-large")
+tokenizer = AutoTokenizer.from_pretrained("google/flan-t5-large")
+model = TFAutoModelForSeq2SeqLM.from_pretrained("google/flan-t5-large")
+
+# input fpr few shot-learning
 
 articles = [
 
@@ -153,3 +152,22 @@ immer wieder durch die Einrichtung schleust. Und für Leifman ist Gerechtigkeit 
 },
 
 ]
+
+few_shot_prompt = ""
+
+for art in articles:
+    few_shot_prompt += f'Translate this text from English to German: \n\n {art.get("Article")} \n\n Translation in German: \n\n {art.get("Translation")}  \n\n\n'
+
+prompt_with_new_article = few_shot_prompt + f'Translate this text from English to German: \n\n {dataset["test"][0].get("article")} \n\n'
+
+# generate tokens
+
+prompt = tokenizer(prompt_with_new_article, return_tensors='tf', max_length=7000, truncation=True, padding=True)
+
+# get outputs
+
+outputs = model.generate(prompt["input_ids"], max_length=7000)
+
+# decode and print
+
+print(f'Translated_test_article: {tokenizer.decode(outputs[0], skip_special_tokens=True)}')

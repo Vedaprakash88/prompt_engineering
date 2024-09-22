@@ -68,11 +68,10 @@ print(tokenizer.decode(outputs[0], skip_special_tokens=True))
 # Define prompt for translation
 
 tranlation_prompt = "translate this from English to German: Germany and India are great countries and have rich history"
-find_article = "Find German Article (die, der, or das) for the noun: Kühlschrank"
 
 # Prepare inputs
 
-translation_inputs = tokenizer(find_article, return_tensors="tf", max_length=512, truncation=True, padding=True)
+translation_inputs = tokenizer(tranlation_prompt, return_tensors="tf", max_length=512, truncation=True, padding=True)
 
 # Generate outputs
 
